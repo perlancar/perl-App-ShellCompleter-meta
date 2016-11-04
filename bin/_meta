@@ -77,5 +77,6 @@ or, you can use L<shcompgen> to do that for you automatically.
 
 Now L<meta> has bash completion:
 
- % meta -<tab>   ;# complete list of options
- % meta <tab>    ;# complete theme
+ % meta -<tab>                 ;# complete list of options
+ % meta <tab>                  ;# complete theme
+ % meta christmas --cat <tab>  ;# complete category
