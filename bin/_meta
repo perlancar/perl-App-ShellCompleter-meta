@@ -43,11 +43,19 @@ declare_completer(
 
             if ($args{type} eq 'arg') {
                 if ($args{argpos} == 0) {
-                    require Complete::Module;
-                    return Complete::Module::complete_module(
+                    #require Complete::Module;
+                    #return Complete::Module::complete_module(
+                    #    word => $word,
+                    #    ns_prefix => 'Acme::MetaSyntactic',
+                    #    path_sep => '::',
+                    #);
+
+                    # this is better
+                    chomp(my @ary = `meta --themes`);
+                    require Complete::Util;
+                    return Complete::Util::complete_array_elem(
                         word => $word,
-                        ns_prefix => 'Acme::MetaSyntactic',
-                        path_sep => '::',
+                        array => \@ary,
                     );
                 } elsif ($args{argpos} == 1) {
                     require Complete::Number;
