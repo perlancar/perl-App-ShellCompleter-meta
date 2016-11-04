@@ -1,0 +1,81 @@
+#!perl
+
+# DATE
+# VERSION
+
+# FRAGMENT id=shcompgen-hint completer=1 for=meta
+
+use strict;
+use warnings;
+
+use Shell::Completer;
+
+declare_completer(
+    options => {
+        'help' => undef,
+        'whitespace|ws' => undef,
+        'version' => undef,
+        'themes' => undef,
+        'remote' => undef,
+        'check' => undef,
+        'category=s' => sub {
+            my %args = @_;
+            my $word = $args{word};
+
+            my $theme = $args{words}[0];
+            return [] unless defined($theme);
+            return [] unless $theme =~ /\A\w+(\::\w+)*\z/;
+            my $pkg = "Acme::MetaSyntactic::$theme";
+            (my $pkg_pm = "$pkg.pm") =~ s!::!/!g;
+            eval { require $pkg_pm; 1 };
+            return [] if $@;
+
+            require Complete::Util;
+            return Complete::Util::complete_array_elem(
+                word => $word,
+                array => [$pkg->categories],
+            );
+        },
+        'sources' => undef,
+        '<>' => sub {
+            my %args = @_;
+            my $word = $args{word};
+
+            if ($args{type} eq 'arg') {
+                if ($args{argpos} == 0) {
+                    require Complete::Module;
+                    return Complete::Module::complete_module(
+                        word => $word,
+                        ns_prefix => 'Acme::MetaSyntactic',
+                        path_sep => '::',
+                    );
+                } elsif ($args{argpos} == 1) {
+                    require Complete::Number;
+                    return Complete::Number::complete_int(
+                        word => $word,
+                        min => 1,
+                    );
+                }
+                undef;
+            }
+            undef;
+        },
+    },
+);
+
+# ABSTRACT: Shell completer for meta (Acme::MetaSyntactic CLI)
+# PODNAME:
+
+=head1 SYNOPSIS
+
+To install, install this module and then in your bash (and/or bash startup
+file):
+
+ complete -C _meta meta
+
+or, you can use L<shcompgen> to do that for you automatically.
+
+Now L<meta> has bash completion:
+
+ % meta -<tab>   ;# complete list of options
+ % meta <tab>    ;# complete theme
