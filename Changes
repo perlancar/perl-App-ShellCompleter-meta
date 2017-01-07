@@ -1,5 +1,3 @@
-Revision history for App-ShellCompleter-meta
-
 0.002   2016-11-04 (PERLANCAR)
 
 	- Use 'meta --themes' to get list of installed themes instead of
