@@ -25,7 +25,7 @@ declare_completer(
             my $word = $args{word};
 
             my $theme = $args{words}[0];
-            Complete::Acme::MetaSyntactic::complete_meta_categories(
+            Complete::Acme::MetaSyntactic::complete_meta_category(
                 word => $word, theme => $theme);
         },
         'sources' => undef,
@@ -37,7 +37,7 @@ declare_completer(
 
             if ($args{type} eq 'arg') {
                 if ($args{argpos} == 0) {
-                    return Complete::Acme::MetaSyntactic::complete_meta_themes_and_categories(
+                    return Complete::Acme::MetaSyntactic::complete_meta_theme_and_category(
                         word => $word);
                 } elsif ($args{argpos} == 1) {
                     require Complete::Number;
