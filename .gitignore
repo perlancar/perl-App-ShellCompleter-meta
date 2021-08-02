@@ -2,3 +2,4 @@ App-ShellCompleter-meta-*
 .build
 *~
 nytprof*
+.DS_Store
